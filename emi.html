@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EMI Calculator Tamil | Loan EMI Calculator</title>
+<meta name="description" content="EMI Calculator in Tamil & English. Calculate Monthly EMI, Principal, Total Interest and Total Amount.">
+<style>
+body{font-family:Arial, sans-serif;background:#f4f6f8;padding:20px}
+.box{max-width:420px;margin:auto;background:#fff;padding:20px;border-radius:10px;box-shadow:0 0 10px rgba(0,0,0,.1)}
+h2{text-align:center}
+label{font-weight:bold;display:block;margin-top:10px}
+input,select,button{width:100%;padding:10px;margin-top:6px}
+button{background:#2e7d32;color:#fff;border:none;font-size:16px;margin-top:14px;border-radius:6px}
+.result{margin-top:15px;background:#eef7ee;padding:12px;border-radius:6px}
+.result p{margin:6px 0}
+small{color:#555}
+</style>
+</head>
+
+<body>
+<div class="box">
+  <h2>EMI Calculator<br><small>கடன் கணிப்பான்(EMI)</small></h2>
+
+  <label>Loan Amount (₹) / கடன் தொகை</label>
+  <input type="number" id="amount" placeholder="Eg: 500000">
+
+  <label>Interest Rate (%) / வட்டி வீதம்</label>
+  <input type="number" id="rate" placeholder="Eg: 10">
+
+  <label>Tenure / காலம்</label>
+  <input type="number" id="tenure" placeholder="Eg: 5">
+  <select id="type">
+    <option value="year">Years / ஆண்டுகள்</option>
+    <option value="month">Months / மாதங்கள்</option>
+  </select>
+
+  <button onclick="calculateEMI()">Calculate EMI / EMI கணக்கிடு</button>
+
+  <div class="result" id="result"></div>
+</div>
+
+<script>
+function calculateEMI(){
+  let P = parseFloat(document.getElementById("amount").value);
+  let r = parseFloat(document.getElementById("rate").value) / 12 / 100;
+  let n = parseFloat(document.getElementById("tenure").value);
+  let type = document.getElementById("type").value;
+
+  if(type === "year"){ n = n * 12; }
+
+  if(isNaN(P) || isNaN(r) || isNaN(n)){
+    document.getElementById("result").innerHTML =
+      "Please fill all fields / எல்லா விவரங்களையும் நிரப்பவும்";
+    return;
+  }
+
+  let EMI = (P*r*Math.pow(1+r,n))/(Math.pow(1+r,n)-1);
+  let totalAmount = EMI * n;
+  let totalInterest = totalAmount - P;
+
+  document.getElementById("result").innerHTML = `
+    <p><b>Principal Amount / கடன் தொகை:</b> ₹ ${P.toFixed(2)}</p>
+    <p><b>Monthly EMI / மாத EMI:</b> ₹ ${EMI.toFixed(2)}</p>
+    <p><b>Total Interest / மொத்த வட்டி:</b> ₹ ${totalInterest.toFixed(2)}</p>
+    <p><b>Total Amount / மொத்த செலுத்த வேண்டியது:</b> ₹ ${totalAmount.toFixed(2)}</p>
+  `;
+}
+</script>
+</body>
+</html>
